@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-study: "Lexend", "Plus Jakarta Sans", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  html {
+    font-family: var(--font-study);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html[data-font-style="sans"] {
+    font-family: var(--font-sans);
+  }
+
+  html[data-font-style="study"] {
+    font-family: var(--font-study);
+  }
+
+  /* Reader font size scaling */
+  html[data-reader-size="normal"] {
+    font-size: 16px;
+  }
+
+  html[data-reader-size="large"] {
+    font-size: 17.5px;
+  }
+
+  html[data-reader-size="xlarge"] {
+    font-size: 19px;
+  }
+
+  /* Line height scaling */
+  html[data-line-spacing="normal"] .study-prose {
+    line-height: 1.6;
+  }
+
+  html[data-line-spacing="relaxed"] .study-prose {
+    line-height: 1.8;
+  }
+}
+
+/* Study text formatting helper classes */
+.study-prose {
+  max-width: 75ch;
+  letter-spacing: 0.01em;
+}
+
+.study-prose p {
+  margin-bottom: 0.85em;
+}
+
+.study-prose p:last-child {
+  margin-bottom: 0;
+}

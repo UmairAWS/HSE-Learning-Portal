@@ -1,0 +1,6 @@
+{
+  "name": "HSE Learning Portal",
+  "description": "Occupational Health, Safety & Environment (HSE) learning platform featuring interactive chapter simulations, risk assessment tools, spaced-repetition flashcards, scenario practice, and safety performance analytics.",
+  "requestFramePermissions": ["notifications"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
