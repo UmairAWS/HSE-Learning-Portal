@@ -23,7 +23,7 @@ import { ReaderProvider } from "./context/ReaderContext";
 
 
 const INITIAL_PROFILE: StudentProfile = {
-  name: "Alex Mercer",
+  name: "",
   title: "Candidate Safety Officer",
   xp: 780,
   level: 2,
@@ -93,7 +93,11 @@ export default function App() {
     const saved = localStorage.getItem("nebosh_student_profile");
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (parsed.name === "Alex Mercer") {
+          parsed.name = "";
+        }
+        return parsed;
       } catch (e) {
         console.error("Failed to parse saved profile", e);
       }

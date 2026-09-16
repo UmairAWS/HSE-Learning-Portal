@@ -25,7 +25,7 @@ export default function StudyGroupChat({ profile }: StudyGroupChatProps) {
 
     const userMessage: ChatMessage = {
       id: `msg_${Date.now()}`,
-      sender: `${profile.name} (You)`,
+      sender: profile.name ? `${profile.name} (You)` : "You",
       role: "student",
       avatar: "🎓",
       content: text.trim(),

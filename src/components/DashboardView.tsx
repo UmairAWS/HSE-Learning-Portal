@@ -42,7 +42,7 @@ export default function DashboardView({ profile, onNavigate, onOpenPwaModal }: D
 
             {/* Title & Subtitle */}
             <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight leading-tight">
-              Welcome back, {profile.name}!
+              {profile.name ? `Welcome back, ${profile.name}!` : "Welcome to HSE Learning Portal"}
             </h1>
 
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">

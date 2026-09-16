@@ -41,7 +41,7 @@ export default function LeaderboardView({ profile }: LeaderboardViewProps) {
     },
     {
       rank: 3,
-      name: `${profile.name} (You)`,
+      name: profile.name ? `${profile.name} (You)` : "You",
       avatar: "🎓",
       country: "Your Region",
       xp: profile.xp,
