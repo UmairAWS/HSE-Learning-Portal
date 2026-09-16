@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#064e3b" />
+    </linearGradient>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <!-- Background Base with Rounded Corners -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
+
+  <!-- Outer Glow Ring -->
+  <rect x="16" y="16" width="480" height="480" rx="96" stroke="#10b981" stroke-width="4" stroke-opacity="0.25" />
+
+  <!-- Shield Shape with Drop Shadow -->
+  <path d="M 256 72 
+           C 340 72, 400 96, 400 96 
+           C 400 240, 360 376, 256 440 
+           C 152 376, 112 240, 112 96 
+           C 112 96, 172 72, 256 72 Z"
+        fill="url(#shieldGrad)"
+        stroke="#34d399"
+        stroke-width="12"
+        stroke-linejoin="round"
+        filter="url(#shadow)" />
+
+  <!-- Safety Cross Symbol -->
+  <path d="M 232 176 H 280 V 232 H 336 V 280 H 280 V 336 H 232 V 280 H 176 V 232 H 232 Z" 
+        fill="#ffffff" 
+        stroke="#047857" 
+        stroke-width="3" 
+        stroke-linejoin="round" />
+
+  <!-- Star of Life / Excellence Dot -->
+  <circle cx="256" cy="132" r="10" fill="#facc15" />
+</svg>

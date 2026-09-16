@@ -1,14 +1,17 @@
 import React from "react";
 import { StudentProfile, ElementId } from "../types";
 import { NEBOSH_ELEMENTS } from "../data/neboshContent";
-import { Flame, Play, Sparkles, BookOpen, Layers, ArrowRight, Shield, RefreshCw, DollarSign, Search, Award, BrainCircuit, Target, Calendar } from "lucide-react";
+import { Flame, Play, Sparkles, BookOpen, Layers, ArrowRight, Shield, RefreshCw, DollarSign, Search, Award, BrainCircuit, Target, Calendar, Smartphone, WifiOff, Download, CheckCircle2 } from "lucide-react";
+import { usePWAInstall } from "../hooks/usePWAInstall";
 
 interface DashboardViewProps {
   profile: StudentProfile;
   onNavigate: (tab: string, elementId?: ElementId) => void;
+  onOpenPwaModal?: () => void;
 }
 
-export default function DashboardView({ profile, onNavigate }: DashboardViewProps) {
+export default function DashboardView({ profile, onNavigate, onOpenPwaModal }: DashboardViewProps) {
+  const { isInstalled } = usePWAInstall();
   const daysUntilExam = Math.max(
     0,
     Math.ceil((new Date(profile.targetExamDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
@@ -73,23 +76,23 @@ export default function DashboardView({ profile, onNavigate }: DashboardViewProp
           </div>
 
           {/* Quick Metrics Pod */}
-          <div className="w-full md:w-auto shrink-0 grid grid-cols-3 md:flex md:flex-col gap-2 pt-2 md:pt-0 border-t md:border-t-0 md:border-l border-white/10 md:pl-5">
-            <div className="p-2 sm:p-2.5 rounded-xl bg-white/5 border border-white/10 text-center md:text-left">
-              <span className="block text-[10px] text-slate-400 font-medium">Days to Exam</span>
-              <span className="text-base sm:text-lg font-extrabold text-white flex items-center justify-center md:justify-start gap-1">
-                <Calendar className="w-3.5 h-3.5 text-emerald-400" /> {daysUntilExam}d
+          <div className="w-full md:w-auto shrink-0 grid grid-cols-3 md:flex md:flex-col gap-1.5 sm:gap-2 pt-2.5 md:pt-0 border-t md:border-t-0 md:border-l border-white/10 md:pl-5">
+            <div className="p-1.5 sm:p-2.5 rounded-xl bg-white/5 border border-white/10 text-center md:text-left">
+              <span className="block text-[9px] sm:text-[10px] text-slate-400 font-medium truncate">Days to Exam</span>
+              <span className="text-xs sm:text-base md:text-lg font-extrabold text-white flex items-center justify-center md:justify-start gap-1">
+                <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-400" /> {daysUntilExam}d
               </span>
             </div>
-            <div className="p-2 sm:p-2.5 rounded-xl bg-white/5 border border-white/10 text-center md:text-left">
-              <span className="block text-[10px] text-slate-400 font-medium">Study Streak</span>
-              <span className="text-base sm:text-lg font-extrabold text-amber-400 flex items-center justify-center md:justify-start gap-1">
-                <Flame className="w-3.5 h-3.5 fill-amber-400" /> {profile.streakDays}d
+            <div className="p-1.5 sm:p-2.5 rounded-xl bg-white/5 border border-white/10 text-center md:text-left">
+              <span className="block text-[9px] sm:text-[10px] text-slate-400 font-medium truncate">Study Streak</span>
+              <span className="text-xs sm:text-base md:text-lg font-extrabold text-amber-400 flex items-center justify-center md:justify-start gap-1">
+                <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-400" /> {profile.streakDays}d
               </span>
             </div>
-            <div className="p-2 sm:p-2.5 rounded-xl bg-white/5 border border-white/10 text-center md:text-left">
-              <span className="block text-[10px] text-slate-400 font-medium">Knowledge XP</span>
-              <span className="text-base sm:text-lg font-extrabold text-purple-400 flex items-center justify-center md:justify-start gap-1">
-                <Award className="w-3.5 h-3.5" /> {profile.xp}
+            <div className="p-1.5 sm:p-2.5 rounded-xl bg-white/5 border border-white/10 text-center md:text-left">
+              <span className="block text-[9px] sm:text-[10px] text-slate-400 font-medium truncate">Knowledge XP</span>
+              <span className="text-xs sm:text-base md:text-lg font-extrabold text-purple-400 flex items-center justify-center md:justify-start gap-1">
+                <Award className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {profile.xp}
               </span>
             </div>
           </div>
@@ -100,7 +103,7 @@ export default function DashboardView({ profile, onNavigate }: DashboardViewProp
       </div>
 
       {/* 4 Main Action Cards - Compact & Smart */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3.5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3.5">
         <div
           onClick={() => onNavigate("flashcards")}
           className="p-3.5 sm:p-4 rounded-xl bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 shadow-sm hover:shadow-md hover:border-indigo-400 dark:hover:border-indigo-500 transition cursor-pointer group flex flex-col justify-between"
@@ -180,6 +183,36 @@ export default function DashboardView({ profile, onNavigate }: DashboardViewProp
             Launch Sims <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition" />
           </div>
         </div>
+      </div>
+
+      {/* Instant Web App Access & 100% Offline Study Banner */}
+      <div className="p-3 sm:p-4 rounded-xl bg-gradient-to-r from-emerald-50 via-teal-50 to-cyan-50 dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-slate-900 border border-emerald-200/80 dark:border-emerald-800/50 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="flex items-start sm:items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs mt-0.5 sm:mt-0">
+            <Smartphone className="w-5 h-5" />
+          </div>
+          <div>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs font-extrabold text-slate-900 dark:text-white">
+                Web App (PWA) &amp; Offline Study Available
+              </span>
+              <span className="text-[10px] font-bold px-2 py-0.2 rounded-full bg-emerald-600/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
+                {isInstalled ? "Installed" : "Instant Access"}
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-0.5">
+              Launch directly from your desktop dock or phone home screen. Flashcards, quizzes, and 4-chapter simulations run 100% offline.
+            </p>
+          </div>
+        </div>
+
+        <button
+          onClick={onOpenPwaModal}
+          className="w-full sm:w-auto justify-center px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition flex items-center gap-1.5 shrink-0"
+        >
+          {isInstalled ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Download className="w-3.5 h-3.5" />}
+          <span>{isInstalled ? "Offline Hub" : "Install App"}</span>
+        </button>
       </div>
 
       {/* Syllabus Element Chapters Grid */}

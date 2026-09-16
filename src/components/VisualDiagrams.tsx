@@ -7,26 +7,31 @@ export default function VisualDiagrams() {
 
   return (
     <div className="space-y-4 sm:space-y-5">
-      {/* Visual selector pills */}
-      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+      {/* Visual selector tabs - Responsive 2x2 grid on mobile, 4-col on desktop */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
         {[
-          { id: "pillars", label: "The 3 Pillars of Safety" },
-          { id: "ilo", label: "Global ILO Statistics & Burden" },
-          { id: "hierarchy", label: "Hierarchy of Risk Control" },
-          { id: "signs", label: "Safety Signs Pictograms" },
-        ].map((v) => (
-          <button
-            key={v.id}
-            onClick={() => setActiveVisual(v.id as any)}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition ${
-              activeVisual === v.id
-                ? "bg-emerald-600 text-white shadow-md"
-                : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700"
-            }`}
-          >
-            {v.label}
-          </button>
-        ))}
+          { id: "pillars", label: "3 Pillars of Safety", icon: Heart },
+          { id: "ilo", label: "Global ILO Statistics", icon: Globe2 },
+          { id: "hierarchy", label: "Hierarchy of Control", icon: ShieldCheck },
+          { id: "signs", label: "Safety Signs & Pictograms", icon: ShieldAlert },
+        ].map((v) => {
+          const Icon = v.icon;
+          const isActive = activeVisual === v.id;
+          return (
+            <button
+              key={v.id}
+              onClick={() => setActiveVisual(v.id as any)}
+              className={`p-2.5 sm:p-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 sm:gap-2 text-center select-none active:scale-[0.98] ${
+                isActive
+                  ? "bg-emerald-600 text-white shadow-md ring-2 ring-emerald-500/20"
+                  : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
+              }`}
+            >
+              <Icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? "text-white" : "text-emerald-500"}`} />
+              <span className="truncate">{v.label}</span>
+            </button>
+          );
+        })}
       </div>
 
       {/* 1. THREE PILLARS */}
@@ -226,7 +231,7 @@ export default function VisualDiagrams() {
                   effectiveness: "Very High Effectiveness",
                   color: "bg-teal-600 text-white",
                   desc: "Replace the hazard with something significantly less dangerous (e.g. substitute toxic solvent paint with water-based emulsion; sack truck for manual handling).",
-                  width: "w-[92%]",
+                  width: "w-full sm:w-[92%]",
                 },
                 {
                   tier: 3,
@@ -234,7 +239,7 @@ export default function VisualDiagrams() {
                   effectiveness: "High (Collective Protection)",
                   color: "bg-sky-600 text-white",
                   desc: "Isolate people from the hazard mechanically (e.g. interlocked machine guards, acoustic enclosures, Local Exhaust Ventilation (LEV), physical barriers).",
-                  width: "w-[84%]",
+                  width: "w-full sm:w-[84%]",
                 },
                 {
                   tier: 4,
@@ -242,7 +247,7 @@ export default function VisualDiagrams() {
                   effectiveness: "Moderate (Relies on Human Behavior)",
                   color: "bg-amber-600 text-white",
                   desc: "Change the way people work through procedures (e.g. Safe Systems of Work, Permit-to-Work, safety sign warnings, job rotation, training).",
-                  width: "w-[76%]",
+                  width: "w-full sm:w-[76%]",
                 },
                 {
                   tier: 5,
@@ -250,7 +255,7 @@ export default function VisualDiagrams() {
                   effectiveness: "Least Effective (Safe Person / Last Resort)",
                   color: "bg-rose-600 text-white",
                   desc: "Protect only the individual wearer (e.g. respirators, ear defenders, safety boots). Fails to danger if improperly fitted, damaged, or removed.",
-                  width: "w-[68%]",
+                  width: "w-full sm:w-[68%]",
                 },
               ].map((h) => (
                 <div key={h.tier} className={`${h.width} mx-auto transition-all`}>
@@ -309,7 +314,7 @@ export default function VisualDiagrams() {
             </div>
 
             {/* Sign Display Box */}
-            <div className="p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-center justify-center gap-8">
+            <div className="p-4 sm:p-8 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-center justify-center gap-5 sm:gap-8">
               {selectedSignCategory === "prohibition" && (
                 <>
                   <div className="w-32 h-32 rounded-full border-8 border-red-600 bg-white flex items-center justify-center relative shadow-lg">

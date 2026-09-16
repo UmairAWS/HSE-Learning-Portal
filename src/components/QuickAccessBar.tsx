@@ -301,8 +301,8 @@ export default function QuickAccessBar({ activeTab, onNavigate }: QuickAccessBar
 
   return (
     <>
-      {/* Collapsed Floating Right Dock (Always visible & accessible) */}
-      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-40 flex flex-col items-end pointer-events-none">
+      {/* Desktop/Tablet Collapsed Floating Right Dock (Hidden on mobile to keep reading space 100% unobstructed) */}
+      <div className="hidden md:flex fixed right-0 top-1/2 -translate-y-1/2 z-40 flex-col items-end pointer-events-none">
         <div className="pointer-events-auto flex flex-col items-center bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-l border-y border-slate-200 dark:border-slate-800 rounded-l-2xl shadow-xl p-1.5 gap-2 group transition-all">
           {/* Main Toggle Button */}
           <button
@@ -370,11 +370,11 @@ export default function QuickAccessBar({ activeTab, onNavigate }: QuickAccessBar
           {/* Backdrop on small screens */}
           <div
             onClick={() => setIsOpen(false)}
-            className="fixed inset-0 bg-slate-950/40 backdrop-blur-xs transition-opacity"
+            className="fixed inset-0 bg-slate-950/50 backdrop-blur-xs transition-opacity"
           />
 
           {/* Right-Side Panel Container */}
-          <div className="relative w-full max-w-[390px] h-full bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col z-10 animate-in slide-in-from-right duration-250">
+          <div className="relative w-full sm:max-w-[400px] h-full bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col z-10 animate-in slide-in-from-right duration-250">
             {/* Drawer Header */}
             <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-900/70">
               <div className="flex items-center gap-2.5">

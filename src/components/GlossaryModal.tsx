@@ -361,15 +361,15 @@ export default function GlossaryModal({
             )}
           </div>
 
-          {/* Filter Pills */}
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pt-1 text-xs">
+          {/* Filter Pills - Wrap so all chapters and categories are accessible */}
+          <div className="flex flex-wrap items-center gap-1.5 pt-1 text-xs">
             {/* Chapter Selector */}
-            <div className="flex items-center gap-1 shrink-0">
+            <div className="flex flex-wrap items-center gap-1">
               {CHAPTERS.map((ch) => (
                 <button
                   key={ch.id}
                   onClick={() => setSelectedChapter(ch.id)}
-                  className={`px-2.5 py-1 rounded-lg font-medium transition shrink-0 ${
+                  className={`px-2.5 py-1 rounded-lg font-medium transition select-none active:scale-95 ${
                     selectedChapter === ch.id
                       ? "bg-emerald-600 text-white shadow-xs font-semibold"
                       : "bg-slate-200/70 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
@@ -380,15 +380,15 @@ export default function GlossaryModal({
               ))}
             </div>
 
-            <div className="w-px h-4 bg-slate-300 dark:bg-slate-700 shrink-0 mx-1"></div>
+            <div className="hidden sm:block w-px h-4 bg-slate-300 dark:bg-slate-700 mx-1"></div>
 
             {/* Category Selector */}
-            <div className="flex items-center gap-1 shrink-0">
+            <div className="flex flex-wrap items-center gap-1">
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`px-2.5 py-1 rounded-lg font-medium transition shrink-0 ${
+                  className={`px-2.5 py-1 rounded-lg font-medium transition select-none active:scale-95 ${
                     selectedCategory === cat.id
                       ? "bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-semibold"
                       : "bg-slate-100 dark:bg-slate-800/60 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"

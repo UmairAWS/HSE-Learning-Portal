@@ -75,17 +75,17 @@ export default function QuizView({
 
   return (
     <div className="space-y-4 sm:space-y-5">
-      {/* Element Filter Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+      {/* Element Filter Pills - Wrap so all chapters are accessible on any screen without horizontal scroll */}
+      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 pb-1">
         <button
           onClick={() => {
             setSelectedElementFilter(0);
             restartQuiz();
           }}
-          className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition ${
+          className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition select-none active:scale-95 ${
             selectedElementFilter === 0
               ? "bg-emerald-600 text-white shadow-sm"
-              : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700"
+              : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-slate-300"
           }`}
         >
           All Chapters ({NEBOSH_QUESTIONS.filter((q) => q.type === "multiple-choice").length})
@@ -97,10 +97,10 @@ export default function QuizView({
               setSelectedElementFilter(el.id);
               restartQuiz();
             }}
-            className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition ${
+            className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition select-none active:scale-95 ${
               selectedElementFilter === el.id
                 ? "bg-emerald-600 text-white shadow-sm"
-                : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700"
+                : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-slate-300"
             }`}
           >
             Chapter {el.id}
@@ -109,7 +109,7 @@ export default function QuizView({
       </div>
 
       {!quizFinished && currentQuestion ? (
-        <div className="bg-white dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700/60 p-4 sm:p-6 md:p-7 shadow-sm space-y-4 sm:space-y-5">
+        <div className="bg-white dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700/60 p-3.5 sm:p-6 md:p-7 shadow-sm space-y-3.5 sm:space-y-5">
           {/* Header Bar */}
           <div className="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400">
             <div className="flex items-center gap-2">

@@ -72,39 +72,42 @@ export default function Element4Simulation({ initialTab }: Element4SimulationPro
   return (
     <div className="space-y-6">
       {/* Sub-nav */}
-      <div className="flex gap-2 p-1 bg-slate-200 dark:bg-slate-800 rounded-xl max-w-lg">
+      <div className="grid grid-cols-3 gap-1 sm:gap-2 p-1 bg-slate-200 dark:bg-slate-800 rounded-xl w-full max-w-lg">
         <button
           onClick={() => setActiveTab("fivewhys")}
-          className={`flex-1 py-2 px-3 rounded-lg font-medium text-xs md:text-sm transition flex items-center justify-center gap-1.5 ${
+          className={`py-2 px-2 sm:px-3 rounded-lg font-medium text-xs md:text-sm transition flex items-center justify-center gap-1 sm:gap-1.5 select-none active:scale-95 ${
             activeTab === "fivewhys"
-              ? "bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 shadow-sm"
-              : "text-slate-600 dark:text-slate-400"
+              ? "bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 shadow-sm font-bold"
+              : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
           }`}
         >
-          <Search className="w-4 h-4" />
-          5 Whys Root Cause
+          <Search className="w-3.5 h-3.5 shrink-0" />
+          <span className="hidden sm:inline">5 Whys Analysis</span>
+          <span className="sm:hidden">5 Whys</span>
         </button>
         <button
           onClick={() => setActiveTab("active_reactive")}
-          className={`flex-1 py-2 px-3 rounded-lg font-medium text-xs md:text-sm transition flex items-center justify-center gap-1.5 ${
+          className={`py-2 px-2 sm:px-3 rounded-lg font-medium text-xs md:text-sm transition flex items-center justify-center gap-1 sm:gap-1.5 select-none active:scale-95 ${
             activeTab === "active_reactive"
-              ? "bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 shadow-sm"
-              : "text-slate-600 dark:text-slate-400"
+              ? "bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 shadow-sm font-bold"
+              : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
           }`}
         >
-          <Activity className="w-4 h-4" />
-          Active vs Reactive
+          <Activity className="w-3.5 h-3.5 shrink-0" />
+          <span className="hidden sm:inline">Active vs Reactive</span>
+          <span className="sm:hidden">Sorting</span>
         </button>
         <button
           onClick={() => setActiveTab("rate_calc")}
-          className={`flex-1 py-2 px-3 rounded-lg font-medium text-xs md:text-sm transition flex items-center justify-center gap-1.5 ${
+          className={`py-2 px-2 sm:px-3 rounded-lg font-medium text-xs md:text-sm transition flex items-center justify-center gap-1 sm:gap-1.5 select-none active:scale-95 ${
             activeTab === "rate_calc"
-              ? "bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 shadow-sm"
-              : "text-slate-600 dark:text-slate-400"
+              ? "bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-400 shadow-sm font-bold"
+              : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
           }`}
         >
-          <Calculator className="w-4 h-4" />
-          Frequency Rate
+          <Calculator className="w-3.5 h-3.5 shrink-0" />
+          <span className="hidden sm:inline">Frequency Rate</span>
+          <span className="sm:hidden">Rate Calc</span>
         </button>
       </div>
 

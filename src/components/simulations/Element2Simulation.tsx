@@ -134,39 +134,42 @@ export default function Element2Simulation({ initialTab }: Element2SimulationPro
   return (
     <div className="space-y-6">
       {/* Sub-nav */}
-      <div className="flex gap-2 p-1 bg-slate-200 dark:bg-slate-800 rounded-xl max-w-lg">
+      <div className="grid grid-cols-3 gap-1 sm:gap-2 p-1 bg-slate-200 dark:bg-slate-800 rounded-xl w-full max-w-lg">
         <button
           onClick={() => setActiveTab("pdca")}
-          className={`flex-1 py-2 px-3 rounded-lg font-medium text-xs md:text-sm transition flex items-center justify-center gap-1.5 ${
+          className={`py-2 px-2 sm:px-3 rounded-lg font-medium text-xs md:text-sm transition flex items-center justify-center gap-1 sm:gap-1.5 select-none active:scale-95 ${
             activeTab === "pdca"
-              ? "bg-white dark:bg-slate-900 text-sky-600 dark:text-sky-400 shadow-sm"
-              : "text-slate-600 dark:text-slate-400"
+              ? "bg-white dark:bg-slate-900 text-sky-600 dark:text-sky-400 shadow-sm font-bold"
+              : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
           }`}
         >
-          <RefreshCw className="w-4 h-4" />
-          PDCA Cycle
+          <RefreshCw className="w-3.5 h-3.5 shrink-0" />
+          <span className="hidden sm:inline">PDCA Cycle</span>
+          <span className="sm:hidden">PDCA</span>
         </button>
         <button
           onClick={() => setActiveTab("smart")}
-          className={`flex-1 py-2 px-3 rounded-lg font-medium text-xs md:text-sm transition flex items-center justify-center gap-1.5 ${
+          className={`py-2 px-2 sm:px-3 rounded-lg font-medium text-xs md:text-sm transition flex items-center justify-center gap-1 sm:gap-1.5 select-none active:scale-95 ${
             activeTab === "smart"
-              ? "bg-white dark:bg-slate-900 text-sky-600 dark:text-sky-400 shadow-sm"
-              : "text-slate-600 dark:text-slate-400"
+              ? "bg-white dark:bg-slate-900 text-sky-600 dark:text-sky-400 shadow-sm font-bold"
+              : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
           }`}
         >
-          <Target className="w-4 h-4" />
-          SMART Policy Builder
+          <Target className="w-3.5 h-3.5 shrink-0" />
+          <span className="hidden sm:inline">SMART Policy</span>
+          <span className="sm:hidden">SMART</span>
         </button>
         <button
           onClick={() => setActiveTab("review")}
-          className={`flex-1 py-2 px-3 rounded-lg font-medium text-xs md:text-sm transition flex items-center justify-center gap-1.5 ${
+          className={`py-2 px-2 sm:px-3 rounded-lg font-medium text-xs md:text-sm transition flex items-center justify-center gap-1 sm:gap-1.5 select-none active:scale-95 ${
             activeTab === "review"
-              ? "bg-white dark:bg-slate-900 text-sky-600 dark:text-sky-400 shadow-sm"
-              : "text-slate-600 dark:text-slate-400"
+              ? "bg-white dark:bg-slate-900 text-sky-600 dark:text-sky-400 shadow-sm font-bold"
+              : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
           }`}
         >
-          <Compass className="w-4 h-4" />
-          Policy Review Triggers
+          <Compass className="w-3.5 h-3.5 shrink-0" />
+          <span className="hidden sm:inline">Policy Review</span>
+          <span className="sm:hidden">Review</span>
         </button>
       </div>
 

@@ -83,8 +83,8 @@ export default function SimulationsHub({ initialChapterId, initialSubTab }: Simu
         </div>
       </div>
 
-      {/* Chapter Cards Nav */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
+      {/* Chapter Cards Nav - 2x2 on mobile, 4-col on desktop to save space */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
         {simulationCards.map((card) => {
           const Icon = card.icon;
           const isSelected = selectedElement === card.id;
@@ -96,28 +96,28 @@ export default function SimulationsHub({ initialChapterId, initialSubTab }: Simu
                 setSelectedElement(card.id);
                 setSelectedSubTab(undefined);
               }}
-              className={`p-3 sm:p-3.5 rounded-xl border text-left transition flex flex-col justify-between ${
+              className={`p-2.5 sm:p-3.5 rounded-xl border text-left transition flex flex-col justify-between select-none active:scale-[0.98] ${
                 isSelected
-                  ? "bg-white dark:bg-slate-800 border-rose-500 dark:border-rose-500 shadow-md ring-2 ring-rose-500/20 scale-[1.02]"
+                  ? "bg-white dark:bg-slate-800 border-emerald-500 dark:border-emerald-500 shadow-md ring-2 ring-emerald-500/20"
                   : "bg-white/80 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700"
               }`}
             >
               <div>
-                <div className="flex justify-between items-start mb-3">
+                <div className="flex justify-between items-start mb-2 sm:mb-3">
                   <div
-                    className={`w-9 h-9 rounded-xl flex items-center justify-center text-white bg-gradient-to-br ${card.color} shadow-sm`}
+                    className={`w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl flex items-center justify-center text-white bg-gradient-to-br ${card.color} shadow-xs`}
                   >
-                    <Icon className="w-5 h-5" />
+                    <Icon className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
                   </div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                  <span className="text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 truncate max-w-[80px] sm:max-w-none">
                     {card.badge}
                   </span>
                 </div>
-                <h3 className="font-bold text-xs md:text-sm text-slate-900 dark:text-white leading-snug">
+                <h3 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white leading-snug line-clamp-2">
                   {card.title}
                 </h3>
               </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-2">
+              <p className="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 mt-1.5 hidden sm:line-clamp-2">
                 {card.subtitle}
               </p>
             </button>

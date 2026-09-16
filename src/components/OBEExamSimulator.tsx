@@ -139,6 +139,7 @@ export default function OBEExamSimulator() {
         }),
       });
 
+      if (!res.ok) throw new Error("Offline or server unavailable");
       const data = await res.json();
       setResult(data);
 
@@ -150,7 +151,51 @@ export default function OBEExamSimulator() {
         });
       }
     } catch (err) {
-      console.error("Evaluation error:", err);
+      console.warn("Using offline NEBOSH P.E.E. heuristic evaluator:", err);
+      // Seamless Offline Rubric Evaluator
+      const words = submissionText.trim().split(/\s+/);
+      const wordCount = words.length;
+      const lower = submissionText.toLowerCase();
+
+      const hasPoint = /point|duty|law|moral|financial|legal|hazard|risk|standard|employer|control|responsibility|c155|r164/i.test(lower);
+      const hasEvidence = /evidence|scenario|worker|vehicle|driver|manager|states|indicated|floor|injury|accident/i.test(lower);
+      const hasExplanation = /because|therefore|explanation|consequence|prevent|lead to|fine|prosecution|recurrence|reason/i.test(lower);
+
+      const maxMarks = question?.marks || 10;
+      let score = 0;
+      if (wordCount >= 20) score += 2;
+      if (wordCount >= 60) score += 2;
+      if (hasPoint) score += 2;
+      if (hasEvidence) score += 2;
+      if (hasExplanation) score += 2;
+      score = Math.min(score, maxMarks);
+
+      const verdict = score >= 8 ? "Distinction" : score >= 6 ? "Credit" : score >= 4.5 ? "Pass" : "Referral";
+      const offlineResult: EvaluationResult = {
+        marksAwarded: score,
+        pointScore: hasPoint ? Math.round(maxMarks * 0.3) : 1,
+        evidenceScore: hasEvidence ? Math.round(maxMarks * 0.3) : 1,
+        explanationScore: hasExplanation ? Math.round(maxMarks * 0.4) : 1,
+        verdict,
+        strengths: hasPoint || hasEvidence || hasExplanation
+          ? ["Evaluated Offline: Detected key P.E.E. terminology and exam keywords."]
+          : ["Attempted scenario question in offline study mode."],
+        areasForImprovement: [
+          ...(!hasEvidence ? ["Quote specific facts directly from the case scenario (Evidence)."] : []),
+          ...(!hasExplanation ? ["Explain why this evidence supports your point and its statutory consequence (Explanation)."] : []),
+          ...(wordCount < 40 ? [`Your answer is concise (${wordCount} words). Aim for 80-120 words for full credit.`] : [])
+        ],
+        modelPEEExample: "Point: The employer failed in their statutory duty under ILO C155 Art. 16. Evidence: The scenario states reversing occurred without a banksman or acoustic warning. Explanation: This exposed workers to crush hazards, risking immediate prohibition notices and uninsured loss claims.",
+        detailedFeedback: `(Offline Assessment Mode) Scored ${score}/${maxMarks} (${verdict}). Evaluated locally using the NEBOSH IG1 P.E.E. heuristic rules engine.`
+      };
+      setResult(offlineResult);
+      if (score >= 7) {
+        confetti({
+          particleCount: 50,
+          spread: 60,
+          origin: { y: 0.6 },
+        });
+      }
     } finally {
       setIsEvaluating(false);
     }

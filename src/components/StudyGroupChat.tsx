@@ -53,6 +53,7 @@ export default function StudyGroupChat({ profile }: StudyGroupChatProps) {
         }),
       });
 
+      if (!res.ok) throw new Error("Offline or server unavailable");
       const data = await res.json();
       if (data?.reply) {
         const tutorMessage: ChatMessage = {
@@ -68,7 +69,33 @@ export default function StudyGroupChat({ profile }: StudyGroupChatProps) {
         setMessages((prev) => [...prev, tutorMessage]);
       }
     } catch (err) {
-      console.error("Chat fetch error:", err);
+      console.warn("Using offline Dr. Phelpstead response engine:", err);
+      const lower = text.toLowerCase();
+      let offlineReply = "That's an important topic in NEBOSH IG1! Always remember to anchor your explanations in the three pillars: Moral (duty of care), Financial (10:1 uninsured iceberg costs), and Legal (ILO C155/R164 enforcement).";
+
+      if (lower.includes("pee") || lower.includes("technique")) {
+        offlineReply = "The P.E.E. technique is vital for NEBOSH Open-Book Exams! 🎯\n• Point: State the clear H&S principle or regulation.\n• Evidence: Pull direct facts from the exam story.\n• Explanation: Explain WHY it matters and its legal/moral/financial impact. 1 mark = 1 solid P.E.E. point!";
+      } else if (lower.includes("iceberg") || lower.includes("cost") || lower.includes("financial")) {
+        offlineReply = "The Uninsured Loss Iceberg represents how hidden uninsured costs (sick pay, lost production, investigation time, criminal fines) outweigh insured direct costs by roughly 10:1 (up to 36x). Remember: criminal fines can NEVER be insured!";
+      } else if (lower.includes("hierarchy") || lower.includes("control")) {
+        offlineReply = "The General Hierarchy of Control follows 5 strict tiers:\n1. Elimination (remove the hazard)\n2. Substitution (replace with lower risk)\n3. Engineering controls (guards, extraction, enclosure)\n4. Administrative controls (SSW, permits, training, job rotation)\n5. PPE (last line of defence, safe person).";
+      } else if (lower.includes("audit") || lower.includes("inspection")) {
+        offlineReply = "Great question! An Inspection checks physical conditions (The 4 Ps: Plant, Premises, People, Procedures) at an operational level. An Audit systematically examines the ENTIRE management system through paperwork, interviews, and observations to assess validity and compliance.";
+      } else if (lower.includes("permit") || lower.includes("ptw")) {
+        offlineReply = "A Permit-to-Work (PTW) is a formal documented procedure for high-risk jobs (hot work, confined spaces, high voltage, work at height, machinery maintenance). Key sections: Issue, Receipt, Clearance, and Cancellation.";
+      }
+
+      const tutorOfflineMessage: ChatMessage = {
+        id: `msg_offline_${Date.now()}`,
+        sender: "Dr. Phelpstead (Lead HSE Tutor - Offline Mode)",
+        role: "tutor",
+        avatar: "👨‍🏫",
+        content: offlineReply,
+        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        likes: 1,
+        tag: "Offline Guidance"
+      };
+      setMessages((prev) => [...prev, tutorOfflineMessage]);
     } finally {
       setIsTyping(false);
     }
@@ -184,15 +211,15 @@ export default function StudyGroupChat({ profile }: StudyGroupChatProps) {
         </div>
 
         {/* Quick Prompts Bar */}
-        <div className="p-2.5 bg-slate-50 dark:bg-slate-900/90 border-t border-slate-200 dark:border-slate-800 flex items-center gap-1.5 overflow-x-auto scrollbar-none">
-          <span className="text-[10px] font-bold text-slate-400 whitespace-nowrap pl-1">
+        <div className="p-2.5 bg-slate-50 dark:bg-slate-900/90 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center gap-1.5">
+          <span className="text-[10px] font-bold text-slate-400 pl-1 shrink-0">
             Quick Inquiries:
           </span>
           {quickPrompts.map((q, idx) => (
             <button
               key={idx}
               onClick={() => handleSendMessage(q)}
-              className="py-1 px-2.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-[11px] whitespace-nowrap hover:border-rose-400 transition"
+              className="py-1 px-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-[11px] hover:border-emerald-500 hover:text-emerald-600 transition select-none active:scale-95"
             >
               {q}
             </button>

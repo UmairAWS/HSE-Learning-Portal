@@ -16,7 +16,9 @@ import CloudSyncModal from "./components/CloudSyncModal";
 import NotificationModal from "./components/NotificationModal";
 import GlossaryModal from "./components/GlossaryModal";
 import QuickAccessBar from "./components/QuickAccessBar";
-import { Layers, FileCheck, CheckSquare, BarChart3, MessageSquare, Trophy, Eye, X, BookOpen, BrainCircuit, Search } from "lucide-react";
+import OfflineIndicator from "./components/OfflineIndicator";
+import PWAInstallModal from "./components/PWAInstallModal";
+import { Layers, FileCheck, CheckSquare, BarChart3, MessageSquare, Trophy, Eye, X, BookOpen, BrainCircuit, Search, Download, Calculator, Bell, Cloud, Edit3 } from "lucide-react";
 import { ReaderProvider } from "./context/ReaderContext";
 
 
@@ -122,6 +124,7 @@ export default function App() {
   const [isSyncModalOpen, setIsSyncModalOpen] = useState<boolean>(false);
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState<boolean>(false);
   const [isMobileMoreOpen, setIsMobileMoreOpen] = useState<boolean>(false);
+  const [isPwaModalOpen, setIsPwaModalOpen] = useState<boolean>(false);
   const [isGlossaryOpen, setIsGlossaryOpen] = useState<boolean>(false);
   const [glossaryQuery, setGlossaryQuery] = useState<string>("");
 
@@ -252,7 +255,7 @@ export default function App() {
 
   return (
     <ReaderProvider>
-      <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
+      <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors overflow-x-hidden w-full max-w-full">
         {/* Top Navigation */}
         <Navbar
           profile={profile}
@@ -269,11 +272,12 @@ export default function App() {
         />
 
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-24 lg:pb-12">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 pb-24 lg:pb-12">
         {activeTab === "dashboard" && (
           <DashboardView
             profile={profile}
             onNavigate={(tab) => handleNavigate(tab)}
+            onOpenPwaModal={() => setIsPwaModalOpen(true)}
           />
         )}
 
@@ -350,87 +354,211 @@ export default function App() {
       {/* Mobile "More" Drawer Modal */}
       {isMobileMoreOpen && (
         <div className="lg:hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex flex-col justify-end animate-in fade-in">
-          <div className="bg-white dark:bg-slate-900 rounded-t-3xl border-t border-slate-200 dark:border-slate-800 p-5 space-y-4">
-            <div className="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3">
-              <h3 className="font-bold text-sm text-slate-900 dark:text-white">More HSE Modules</h3>
+          <div className="bg-white dark:bg-slate-900 rounded-t-3xl border-t border-slate-200 dark:border-slate-800 p-4 sm:p-5 space-y-3.5 max-h-[85vh] overflow-y-auto pb-safe">
+            {/* Drawer Drag Indicator & Header */}
+            <div className="flex flex-col items-center gap-1.5 pb-2">
+              <div className="w-10 h-1 rounded-full bg-slate-300 dark:bg-slate-700" />
+            </div>
+
+            <div className="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-2.5">
+              <div>
+                <h3 className="font-extrabold text-sm text-slate-900 dark:text-white">All Study Modules &amp; Tools</h3>
+                <p className="text-[11px] text-slate-400">Everything accessible in one unified hub</p>
+              </div>
               <button
                 onClick={() => setIsMobileMoreOpen(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-white"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 text-xs">
+            <div className="grid grid-cols-2 gap-2 sm:gap-2.5 text-xs">
+              {/* Quick Frequency Formulas & Calculator */}
+              <button
+                onClick={() => {
+                  setIsMobileMoreOpen(false);
+                  window.dispatchEvent(new CustomEvent("open_quick_access", { detail: { panel: "calc" } }));
+                }}
+                className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/80 font-bold flex items-center gap-2.5 text-left col-span-2 text-emerald-700 dark:text-emerald-300 active:scale-[0.98] transition"
+              >
+                <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                  <Calculator className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="font-bold leading-tight">Quick Formulas &amp; Rate Calculator</div>
+                  <div className="text-[10px] text-emerald-600/80 dark:text-emerald-400/80 font-normal">
+                    AFR, AIR, Iceberg 10:1 ratio &amp; cost calculator
+                  </div>
+                </div>
+              </button>
+
+              {/* Glossary Search */}
               <button
                 onClick={() => {
                   setIsMobileMoreOpen(false);
                   handleOpenGlossary();
                 }}
-                className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/80 font-bold flex items-center gap-2.5 text-left col-span-2 text-emerald-700 dark:text-emerald-300"
+                className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 font-bold flex items-center gap-2 text-left active:scale-[0.98] transition"
               >
-                <BookOpen className="w-4 h-4 text-emerald-500" />
-                <span>Search HSE Glossary &amp; Definitions (⌘K)</span>
+                <BookOpen className="w-4 h-4 text-emerald-500 shrink-0" />
+                <div className="truncate">
+                  <div className="font-semibold">HSE Glossary</div>
+                  <div className="text-[10px] text-slate-400 font-normal">Terms &amp; statutory rules</div>
+                </div>
               </button>
 
+              {/* Revision Scratchpad */}
+              <button
+                onClick={() => {
+                  setIsMobileMoreOpen(false);
+                  window.dispatchEvent(new CustomEvent("open_quick_access", { detail: { panel: "notes" } }));
+                }}
+                className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 font-bold flex items-center gap-2 text-left active:scale-[0.98] transition"
+              >
+                <Edit3 className="w-4 h-4 text-purple-500 shrink-0" />
+                <div className="truncate">
+                  <div className="font-semibold">Study Notes</div>
+                  <div className="text-[10px] text-slate-400 font-normal">Scratchpad &amp; summary</div>
+                </div>
+              </button>
+
+              {/* Spaced-Repetition Flashcards */}
               <button
                 onClick={() => {
                   setActiveTab("flashcards");
                   setIsMobileMoreOpen(false);
                 }}
-                className="p-3.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800/80 font-bold flex items-center gap-2.5 text-left col-span-2 text-indigo-700 dark:text-indigo-300"
+                className="p-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800/80 font-bold flex items-center gap-2.5 text-left col-span-2 text-indigo-700 dark:text-indigo-300 active:scale-[0.98] transition"
               >
-                <BrainCircuit className="w-4 h-4 text-indigo-500" />
-                <span>Spaced-Repetition Flashcards</span>
+                <BrainCircuit className="w-4 h-4 text-indigo-500 shrink-0" />
+                <div>
+                  <div className="font-bold leading-tight">Spaced-Repetition Flashcards</div>
+                  <div className="text-[10px] text-indigo-600/80 dark:text-indigo-400/80 font-normal">Leitner 5-box statutory definitions</div>
+                </div>
               </button>
 
+              {/* Infographics */}
               <button
                 onClick={() => {
                   setActiveTab("visuals");
                   setIsMobileMoreOpen(false);
                 }}
-                className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 font-bold flex items-center gap-2.5 text-left"
+                className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 font-bold flex items-center gap-2 text-left active:scale-[0.98] transition"
               >
-                <Eye className="w-4 h-4 text-rose-500" />
-                <span>Infographics</span>
+                <Eye className="w-4 h-4 text-rose-500 shrink-0" />
+                <div className="truncate">
+                  <div className="font-semibold">Infographics</div>
+                  <div className="text-[10px] text-slate-400 font-normal">Hierarchy &amp; models</div>
+                </div>
               </button>
 
+              {/* Analytics */}
               <button
                 onClick={() => {
                   setActiveTab("analytics");
                   setIsMobileMoreOpen(false);
                 }}
-                className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 font-bold flex items-center gap-2.5 text-left"
+                className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 font-bold flex items-center gap-2 text-left active:scale-[0.98] transition"
               >
-                <BarChart3 className="w-4 h-4 text-sky-500" />
-                <span>Analytics</span>
+                <BarChart3 className="w-4 h-4 text-sky-500 shrink-0" />
+                <div className="truncate">
+                  <div className="font-semibold">Analytics</div>
+                  <div className="text-[10px] text-slate-400 font-normal">Mastery &amp; readiness</div>
+                </div>
               </button>
 
+              {/* Study Group */}
               <button
                 onClick={() => {
                   setActiveTab("chat");
                   setIsMobileMoreOpen(false);
                 }}
-                className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 font-bold flex items-center gap-2.5 text-left"
+                className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 font-bold flex items-center gap-2 text-left active:scale-[0.98] transition"
               >
-                <MessageSquare className="w-4 h-4 text-purple-500" />
-                <span>Study Group</span>
+                <MessageSquare className="w-4 h-4 text-purple-500 shrink-0" />
+                <div className="truncate">
+                  <div className="font-semibold">Study Group</div>
+                  <div className="text-[10px] text-slate-400 font-normal">Peer discussions</div>
+                </div>
               </button>
 
+              {/* Leaderboard */}
               <button
                 onClick={() => {
                   setActiveTab("leaderboard");
                   setIsMobileMoreOpen(false);
                 }}
-                className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 font-bold flex items-center gap-2.5 text-left"
+                className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 font-bold flex items-center gap-2 text-left active:scale-[0.98] transition"
               >
-                <Trophy className="w-4 h-4 text-amber-500" />
-                <span>Leaderboard</span>
+                <Trophy className="w-4 h-4 text-amber-500 shrink-0" />
+                <div className="truncate">
+                  <div className="font-semibold">Leaderboard</div>
+                  <div className="text-[10px] text-slate-400 font-normal">Class rankings</div>
+                </div>
+              </button>
+
+              {/* Cloud Backup & Progress Sync */}
+              <button
+                onClick={() => {
+                  setIsMobileMoreOpen(false);
+                  setIsSyncModalOpen(true);
+                }}
+                className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 font-bold flex items-center gap-2 text-left active:scale-[0.98] transition"
+              >
+                <Cloud className="w-4 h-4 text-sky-500 shrink-0" />
+                <div className="truncate">
+                  <div className="font-semibold">Cloud Sync</div>
+                  <div className="text-[10px] text-slate-400 font-normal">Progress backup</div>
+                </div>
+              </button>
+
+              {/* Study Reminders */}
+              <button
+                onClick={() => {
+                  setIsMobileMoreOpen(false);
+                  setIsNotificationModalOpen(true);
+                }}
+                className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 font-bold flex items-center gap-2 text-left active:scale-[0.98] transition"
+              >
+                <Bell className="w-4 h-4 text-amber-500 shrink-0" />
+                <div className="truncate">
+                  <div className="font-semibold">Reminders</div>
+                  <div className="text-[10px] text-slate-400 font-normal">Exam target schedule</div>
+                </div>
+              </button>
+
+              {/* Install PWA */}
+              <button
+                onClick={() => {
+                  setIsMobileMoreOpen(false);
+                  setIsPwaModalOpen(true);
+                }}
+                className="p-3.5 rounded-xl bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 font-bold flex items-center gap-2.5 text-left col-span-2 active:scale-[0.98] transition"
+              >
+                <div className="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                  <Download className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="font-bold leading-tight">Install Web App (100% Offline Study Mode)</div>
+                  <div className="text-[10px] text-emerald-600/80 dark:text-emerald-400/80 font-normal">
+                    Add to phone home screen or desktop dock
+                  </div>
+                </div>
               </button>
             </div>
           </div>
         </div>
       )}
+
+      {/* Offline Mode Active Banner */}
+      <OfflineIndicator />
+
+      {/* PWA & Offline Hub Modal */}
+      <PWAInstallModal
+        isOpen={isPwaModalOpen}
+        onClose={() => setIsPwaModalOpen(false)}
+      />
 
       {/* Cloud Sync Modal */}
       <CloudSyncModal
